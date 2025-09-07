@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>仁親銅導體 - 輕量化效益計算器</title>
+    <style>
+        body {
+            font-family: 'Microsoft JhengHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 300;
+        }
+        
+        .subtitle {
+            margin-top: 10px;
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+        
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 40px;
+        }
+        
+        .input-section, .results-section {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 10px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .calculate-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.3s;
+        }
+        
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .results-section h3 {
+            color: #1e3c72;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        
+        .result-item {
+            background: white;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 6px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .result-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #1e3c72;
+        }
+        
+        .result-label {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        
+        .technology-highlight {
+            background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .specs-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .specs-table th, .specs-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .specs-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 輕量化效益計算器</h1>
+            <div class="subtitle">石墨烯銅複合導線 - 航太國防應用效益評估</div>
+        </div>
+        
+        <div class="content">
+            <div class="input-section">
+                <h3>📋 輸入參數</h3>
+                
+                <div class="form-group">
+                    <label for="aircraft-type">載具類型</label>
+                    <select id="aircraft-type" onchange="updateDefaults()">
+                        <option value="fighter">戰機 (F-16V/經國號)</option>
+                        <option value="trainer">高教機 (勇鷹)</option>
+                        <option value="large-uav">大型無人機 (T-235AH)</option>
+                        <option value="medium-uav">中型無人機</option>
+                        <option value="small-uav">小型無人機</option>
+                        <option value="naval">艦艇 (沱江級)</option>
+                        <option value="satellite">衛星</option>
+                        <option value="custom">自定義</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="total-weight">載具總重量 (kg)</label>
+                    <input type="number" id="total-weight" placeholder="輸入載具總重量" value="8500">
+                </div>
+                
+                <div class="form-group">
+                    <label for="current-harness-weight">現有線束重量 (kg)</label>
+                    <input type="number" id="current-harness-weight" placeholder="輸入現有線束重量" value="85">
+                </div>
+                
+                <div class="form-group">
+                    <label for="weight-reduction">預期減重比例 (%)</label>
+                    <input type="number" id="weight-reduction" placeholder="石墨烯銅線減重比例" value="15" min="1" max="50">
+                </div>
+                
+                <div class="form-group">
+                    <label for="mission-range">任務航程/續航 (km 或 小時)</label>
+                    <input type="number" id="mission-range" placeholder="輸入任務航程或續航時間" value="1000">
+                </div>
+                
+                <div class="form-group">
+                    <label for="fuel-price">燃料成本 ($/kg)</label>
+                    <input type="number" id="fuel-price" placeholder="燃料單價" value="0.675" step="0.01">
+                </div>
+                
+                <div class="form-group">
+                    <label for="annual-hours">年度作戰/飛行時數</label>
+                    <input type="number" id="annual-hours" placeholder="年度使用時數" value="300">
+                </div>
+                
+                <button class="calculate-btn" onclick="calculateBenefits()">🔄 計算效益</button>
+            </div>
+            
+            <div class="results-section">
+                <h3>📊 效益分析結果</h3>
+                
+                <div class="result-item">
+                    <div class="result-value" id="weight-saved">--</div>
+                    <div class="result-label">線束減重 (kg)</div>
+                </div>
+                
+                <div class="result-item">
+                    <div class="result-value" id="range-increase">--</div>
+                    <div class="result-label">航程增加 (km) 或續航增加 (分鐘)</div>
+                </div>
+                
+                <div class="result-item">
+                    <div class="result-value" id="fuel-saving-mission">--</div>
+                    <div class="result-label">每次任務燃料節省 (kg)</div>
+                </div>
+                
+                <div class="result-item">
+                    <div class="result-value" id="annual-fuel-saving">--</div>
+                    <div class="result-label">年度燃料節省 (kg)</div>
+                </div>
+                
+                <div class="result-item">
+                    <div class="result-value" id="annual-cost-saving">--</div>
+                    <div class="result-label">年度成本節省 ($USD)</div>
+                </div>
+                
+                <div class="result-item">
+                    <div class="result-value" id="payload-increase">--</div>
+                    <div class="result-label">額外酬載能力 (kg)</div>
+                </div>
+                
+                <div class="technology-highlight">
+                    <h4>🧬 仁親石墨烯銅複合導線優勢</h4>
+                    <p>✓ 導電率提升 1-3% | ✓ 重量減輕高達 20% | ✓ 耐高溫 260°C<br>
+                    ✓ 機械強度增強 | ✓ 符合 AS22759 航太標準</p>
+                </div>
+            </div>
+        </div>
+        
+        <div style="padding: 30px 40px; background-color: #f8f9fa;">
+            <h3>🎯 各載具類型規格對照</h3>
+            <table class="specs-table">
+                <thead>
+                    <tr>
+                        <th>載具類型</th>
+                        <th>典型重量 (kg)</th>
+                        <th>線束重量 (kg)</th>
+                        <th>重量比例</th>
+                        <th>潜在效益</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>F-16V 戰機</td>
+                        <td>8,500</td>
+                        <td>85 (1%)</td>
+                        <td>電氣系統</td>
+                        <td>航程增加 50+ km</td>
+                    </tr>
+                    <tr>
+                        <td>T-235AH 無人機</td>
+                        <td>220</td>
+                        <td>6.6 (3%)</td>
+                        <td>關鍵系統</td>
+                        <td>續航增加 20+ 分鐘</td>
+                    </tr>
+                    <tr>
+                        <td>衛星</td>
+                        <td>500</td>
+                        <td>15 (3%)</td>
+                        <td>電力系統</td>
+                        <td>發射成本節省 $45,000</td>
+                    </tr>
+                    <tr>
+                        <td>沱江級巡邏艦</td>
+                        <td>685,000</td>
+                        <td>6,850 (1%)</td>
+                        <td>艦電系統</td>
+                        <td>航速/耐海性提升</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function updateDefaults() {
+            const aircraftType = document.getElementById('aircraft-type').value;
+            const defaults = {
+                'fighter': { weight: 8500, harness: 85, range: 1000, hours: 300 },
+                'trainer': { weight: 4200, harness: 42, range: 800, hours: 400 },
+                'large-uav': { weight: 220, harness: 6.6, range: 8, hours: 200 }, // 8小時續航
+                'medium-uav': { weight: 50, harness: 2, range: 4, hours: 150 },
+                'small-uav': { weight: 5, harness: 0.2, range: 1.5, hours: 100 },
+                'naval': { weight: 685000, harness: 6850, range: 2000, hours: 1000 },
+                'satellite': { weight: 500, harness: 15, range: 0, hours: 0 },
+                'custom': { weight: 1000, harness: 30, range: 500, hours: 200 }
+            };
+            
+            const config = defaults[aircraftType];
+            document.getElementById('total-weight').value = config.weight;
+            document.getElementById('current-harness-weight').value = config.harness;
+            document.getElementById('mission-range').value = config.range;
+            document.getElementById('annual-hours').value = config.hours;
+        }
+        
+        function calculateBenefits() {
+            // 獲取輸入值
+            const aircraftType = document.getElementById('aircraft-type').value;
+            const totalWeight = parseFloat(document.getElementById('total-weight').value);
+            const currentHarnessWeight = parseFloat(document.getElementById('current-harness-weight').value);
+            const weightReductionPercent = parseFloat(document.getElementById('weight-reduction').value);
+            const missionRange = parseFloat(document.getElementById('mission-range').value);
+            const fuelPrice = parseFloat(document.getElementById('fuel-price').value);
+            const annualHours = parseFloat(document.getElementById('annual-hours').value);
+            
+            // 計算減重量
+            const weightSaved = currentHarnessWeight * (weightReductionPercent / 100);
+            
+            // 不同載具類型的效率係數
+            const efficiencyFactors = {
+                'fighter': { fuelFactor: 0.003, rangeMultiplier: 1.2 }, // 燃料因子 kg/kg/km
+                'trainer': { fuelFactor: 0.0025, rangeMultiplier: 1.1 },
+                'large-uav': { fuelFactor: 0.004, rangeMultiplier: 2.5 }, // UAV對重量更敏感
+                'medium-uav': { fuelFactor: 0.005, rangeMultiplier: 3 },
+                'small-uav': { fuelFactor: 0.006, rangeMultiplier: 4 },
+                'naval': { fuelFactor: 0.002, rangeMultiplier: 0.8 },
+                'satellite': { fuelFactor: 0, rangeMultiplier: 0 }, // 衛星不耗燃料
+                'custom': { fuelFactor: 0.003, rangeMultiplier: 1.5 }
+            };
+            
+            const factor = efficiencyFactors[aircraftType];
+            
+            // 計算航程增加（基於重量節省）
+            let rangeIncrease;
+            if (aircraftType === 'satellite') {
+                rangeIncrease = 0; // 衛星無航程概念
+            } else if (aircraftType.includes('uav')) {
+                // UAV 以續航時間計算（分鐘）
+                rangeIncrease = (weightSaved / totalWeight) * missionRange * 60 * factor.rangeMultiplier;
+            } else {
+                // 飛機以航程計算（km）
+                rangeIncrease = (weightSaved / totalWeight) * missionRange * factor.rangeMultiplier;
+            }
+            
+            // 計算燃料節省
+            const fuelSavingPerMission = weightSaved * missionRange * factor.fuelFactor;
+            const missionsPerYear = aircraftType === 'satellite' ? 0 : annualHours / (missionRange / 500); // 估算年度任務數
+            const annualFuelSaving = fuelSavingPerMission * Math.max(missionsPerYear, 50); // 最少50次任務
+            
+            // 計算成本節省
+            const annualCostSaving = annualFuelSaving * fuelPrice;
+            
+            // 計算額外酬載能力
+            const payloadIncrease = weightSaved;
+            
+            // 更新顯示結果
+            document.getElementById('weight-saved').textContent = weightSaved.toFixed(2) + ' kg';
+            
+            if (aircraftType === 'satellite') {
+                document.getElementById('range-increase').textContent = '軌道壽命延長';
+                document.getElementById('fuel-saving-mission').textContent = '發射成本節省';
+                document.getElementById('annual-fuel-saving').textContent = '$' + (weightSaved * 15000).toFixed(0); // 每kg約15000美元發射成本
+                document.getElementById('annual-cost-saving').textContent = '$' + (weightSaved * 15000).toFixed(0);
+            } else {
+                if (aircraftType.includes('uav')) {
+                    document.getElementById('range-increase').textContent = rangeIncrease.toFixed(1) + ' 分鐘';
+                } else {
+                    document.getElementById('range-increase').textContent = rangeIncrease.toFixed(1) + ' km';
+                }
+                document.getElementById('fuel-saving-mission').textContent = fuelSavingPerMission.toFixed(2) + ' kg';
+                document.getElementById('annual-fuel-saving').textContent = annualFuelSaving.toFixed(0) + ' kg';
+                document.getElementById('annual-cost-saving').textContent = '$' + annualCostSaving.toFixed(0);
+            }
+            
+            document.getElementById('payload-increase').textContent = payloadIncrease.toFixed(2) + ' kg';
+        }
+        
+        // 初始化預設值
+        updateDefaults();
+        calculateBenefits();
+    </script>
+</body>
+</html>
